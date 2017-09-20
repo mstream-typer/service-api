@@ -1,0 +1,17 @@
+{:objects {:course_exercise {:fields {:id {:type String}
+                                      :name {:type String}
+                                      :description {:type String}}}
+           :course {:fields {:id {:type String}
+                             :name {:type String}
+                             :exercises {:type (list :course_exercise)
+                                         :resolve :course-exercises}}}
+           :exercise {:fields {:id {:type String}
+                               :time {:type Int}
+                               :text {:type String}}}}
+ :queries {:course {:type :course
+                    :args {:id {:type String}}
+                    :resolve :course}
+           :exercise {:type :exercise
+                      :args {:id {:type String}}
+                      :resolve :exercise}}}
+
