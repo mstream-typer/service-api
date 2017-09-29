@@ -1,54 +1,33 @@
 (ns typer-service-api.server
   (:gen-class)
-  (:require [clojure.edn :as edn]
-            [clojure.java.io :as io]
-            [io.pedestal.http :as server]
+  (:require [io.pedestal.http :as http]
+            [io.pedestal.http.cors :as cors]
             [io.pedestal.http.route :as route]
-            [com.walmartlabs.lacinia.pedestal :as lacinia]
-            [com.walmartlabs.lacinia.schema :as schema]
-            [com.walmartlabs.lacinia.util :as util]))
+            [typer-service-api.service :as service]))
 
 
-(defn resolve-course-exercises [ctx args value]
-  [{:id 1
-    :name "name1"
-    :description "desc1"}
-   {:id 2
-    :name "name2"
-    :description "desc2"}])
+(defn add-cors-config [service]
+  (assoc service
+         ::http/interceptors
+         (cons (cors/allow-origin (constantly true))
+               (::http/interceptors service))))
 
 
-(defn resolve-course [ctx args value]
-  (let [id (:id args)]
-    {:id id
-     :name (str "course" id)}))
-
-
-(defn resolve-exercise [ctx args value]
-  (let [id (:id args)]
-    {:id id
-     :time 100
-     :text (str "text" id " text" id)}))
-
-
-(defn schema []
-  (-> (io/resource "schema.edn")
-      (slurp)
-      (edn/read-string)
-      (util/attach-resolvers {:course-exercises resolve-course-exercises
-                              :course resolve-course
-                              :exercise resolve-exercise})
-      (schema/compile)))
+(defn add-port-config [service]
+  (assoc service
+         ::http/port
+         80))
 
 
 (def service
-  (lacinia/pedestal-service (schema)
-                            {:graphiql true}))
+  (-> service/lacinia
+      (add-cors-config)
+      (add-port-config)))
 
 
-(defonce runnable-service (server/create-server service))
+(defonce runnable-service (http/create-server service))
 
 
 (defn -main
   [& args]
-  (server/start runnable-service))
+  (http/start runnable-service))

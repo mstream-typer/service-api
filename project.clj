@@ -7,7 +7,7 @@
    [io.pedestal/pedestal.jetty "0.5.2"]
    [io.pedestal/pedestal.service "0.5.2"]
    [com.walmartlabs/lacinia-pedestal "0.3.0"]]
-
+  
   
   :plugins
   [[lein-ancient "0.6.10"]
