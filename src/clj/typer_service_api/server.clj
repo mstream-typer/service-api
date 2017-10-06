@@ -16,7 +16,7 @@
 (defn add-port-config [service]
   (assoc service
          ::http/port
-         80))
+         8080))
 
 
 (def service
