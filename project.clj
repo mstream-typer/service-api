@@ -6,7 +6,8 @@
    [funcool/cuerdas "2.0.3"]
    [io.pedestal/pedestal.jetty "0.5.2"]
    [io.pedestal/pedestal.service "0.5.2"]
-   [com.walmartlabs/lacinia-pedestal "0.3.0"]]
+   [com.walmartlabs/lacinia-pedestal "0.3.0"]
+   [ch.qos.logback/logback-classic "1.2.3"]]
   
   
   :plugins
@@ -21,7 +22,8 @@
 
 
   :source-paths
-  ["src/clj"]
+  ["src/clj"
+   "config"]
 
 
   :main
